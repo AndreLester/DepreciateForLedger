@@ -1,7 +1,11 @@
-from distutils.core import setup
-import py2exe
-from glob import glob
+from setuptools import find_packages, setup
 
-data_files = [("Microsoft.VC90.CRT", glob(r'c:\dist\*.*'))]
 
-setup(data_files=data_files,console=['depreciate.py'])
+setup(
+    name="depreciate-for-ledger",
+    version="1.0.0",
+    description="Generate Ledger transactions for asset depreciation",
+    py_modules=["Depreciation", "depreciate"],
+    packages=find_packages(),
+    entry_points={"console_scripts": ["depreciate=depreciate:main"]},
+)
