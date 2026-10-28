@@ -269,11 +269,39 @@ This method takes care of all dependancies and can manage updates for you.  For 
 
 h2. Installing:
 
-Installing depreciate is pretty easy. Because Macs and Linux already include Python, all you need to do is download the depreciate source, decompress it, and move it wherever you want. Of course, if you use depreciate a lot you might want to "add your installation location to your PATH variable":http://kb.wbpsystems.com/index.php/article/setting-your-path-variable.
+This project supports Python 3. Install it from the @src@ directory with:
 
-On Windows, you need to download "Python 2.x":http://www.python.org/download/ and install it before installing depreciate.  Or install the version of depreciate containing Python. 
+<pre>
+python3 -m pip install .
+</pre>
+
+The install provides the @depreciate@ command. The source script can also be run directly with Python 3.
+
+h2. Python API:
+
+The transaction generator can be called from another Python script. It returns the generated Ledger entries as a string:
+
+<pre>
+from depreciate import generate_transactions
+
+entries = generate_transactions(
+    method="sum",
+    cost=1000.33,
+    residual=5.22,
+    periods=9,
+    date="2011/04/02",
+    asset="Assets:Desks",
+    payment="Liabilities:Credit Card",
+    note="Purchase of New Desk",
+)
+print(entries)
+</pre>
+
+The function accepts @method@, @cost@, @residual@, @asset@, @expense@, @payment@, @periods@, @date@, @note@, @period_type@, and @currency@. Defaults match the command-line options; @date@ may be a date, datetime, or parseable date string.
 
 h2. Download:
+
+The downloadable archives below are legacy Python 2 distributions and are retained for historical reference. For Python 3, install from the source as described above.
 
 Windows (Zip file, Contains Python):"https://github.com/tazzben/DepreciateForLedger/blob/master/dist/depreciate_dist.zip":https://github.com/tazzben/DepreciateForLedger/blob/master/dist/depreciate_dist.zip?raw=true
 Windows (Zip file): "https://github.com/tazzben/DepreciateForLedger/blob/master/dist/depreciate.zip":https://github.com/tazzben/DepreciateForLedger/blob/master/dist/depreciate.zip?raw=true

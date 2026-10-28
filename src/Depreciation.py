@@ -1,4 +1,6 @@
-from decimal import *
+from decimal import Decimal, InvalidOperation
+
+
 class DepreciationSchedule:
 	"""Class to define depreciation schedule for assets"""
 	def __init__(self, typofdepreciation='straight line', periods=1, cost=0, residual=0):
@@ -11,29 +13,24 @@ class DepreciationSchedule:
 		else:
 			self.typofdepreciation = 'straight'
 		
-		if self.is_number(periods) and periods>0:
+		try:
 			self.periods = Decimal(str(periods))
-		else:
-			return False
-		
-		if self.is_number(cost):
 			self.cost = Decimal(str(cost))
-		else:
-			return False
-			
-		if self.is_number(residual):
 			self.residual = Decimal(str(residual))
-		else:
-			return False
+		except (InvalidOperation, TypeError, ValueError):
+			raise ValueError("periods, cost, and residual must be numbers")
+		if not self.periods.is_finite() or self.periods <= 0 or self.periods != self.periods.to_integral_value():
+			raise ValueError("periods must be a positive integer")
+		if not self.cost.is_finite() or self.cost < 0:
+			raise ValueError("cost must be a non-negative number")
+		if not self.residual.is_finite() or self.residual < 0 or self.residual > self.cost:
+			raise ValueError("residual must be between zero and cost")
 	
 	def is_number(self, s):
 		try:
-			Decimal(str(s))
-			if s>=0:
-				return True
-			else:
-				return False
-		except ValueError:
+			value = Decimal(str(s))
+			return value.is_finite() and value >= 0
+		except (InvalidOperation, TypeError, ValueError):
 			return False	
 	
 	def Straight(self):

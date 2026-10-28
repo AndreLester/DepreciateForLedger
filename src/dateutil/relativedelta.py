@@ -1,8 +1,7 @@
 """
 Copyright (c) 2003-2010  Gustavo Niemeyer <gustavo@niemeyer.net>
 
-This module offers extensions to the standard python 2.3+
-datetime module.
+This module offers extensions to the standard datetime module.
 """
 __author__ = "Gustavo Niemeyer <gustavo@niemeyer.net>"
 __license__ = "PSF License"
@@ -115,7 +114,7 @@ Here is the behavior of operations with relativedelta:
         if dt1 and dt2:
             if not isinstance(dt1, datetime.date) or \
                not isinstance(dt2, datetime.date):
-                raise TypeError, "relativedelta only diffs datetime/date"
+                raise TypeError("relativedelta only diffs datetime/date")
             if type(dt1) is not type(dt2):
                 if not isinstance(dt1, datetime.datetime):
                     dt1 = datetime.datetime.fromordinal(dt1.toordinal())
@@ -195,7 +194,7 @@ Here is the behavior of operations with relativedelta:
                             self.day = yday-ydayidx[idx-1]
                         break
                 else:
-                    raise ValueError, "invalid year day (%d)" % yday
+                    raise ValueError("invalid year day (%d)" % yday)
 
         self._fix()
 
@@ -244,7 +243,7 @@ Here is the behavior of operations with relativedelta:
 
     def __radd__(self, other):
         if not isinstance(other, datetime.date):
-            raise TypeError, "unsupported type for add operation"
+            raise TypeError("unsupported type for add operation")
         elif self._has_time and not isinstance(other, datetime.datetime):
             other = datetime.datetime.fromordinal(other.toordinal())
         year = (self.year or other.year)+self.years
@@ -290,7 +289,7 @@ Here is the behavior of operations with relativedelta:
 
     def __add__(self, other):
         if not isinstance(other, relativedelta):
-            raise TypeError, "unsupported type for add operation"
+            raise TypeError("unsupported type for add operation")
         return relativedelta(years=other.years+self.years,
                              months=other.months+self.months,
                              days=other.days+self.days,
@@ -310,7 +309,7 @@ Here is the behavior of operations with relativedelta:
 
     def __sub__(self, other):
         if not isinstance(other, relativedelta):
-            raise TypeError, "unsupported type for sub operation"
+            raise TypeError("unsupported type for sub operation")
         return relativedelta(years=other.years-self.years,
                              months=other.months-self.months,
                              days=other.days-self.days,
@@ -346,7 +345,7 @@ Here is the behavior of operations with relativedelta:
                              second=self.second,
                              microsecond=self.microsecond)
 
-    def __nonzero__(self):
+    def __bool__(self):
         return not (not self.years and
                     not self.months and
                     not self.days and
@@ -426,7 +425,7 @@ Here is the behavior of operations with relativedelta:
                      "hour", "minute", "second", "microsecond"]:
             value = getattr(self, attr)
             if value is not None:
-                l.append("%s=%s" % (attr, `value`))
+                l.append("%s=%s" % (attr, repr(value)))
         return "%s(%s)" % (self.__class__.__name__, ", ".join(l))
 
 # vim:ts=4:sw=4:et
